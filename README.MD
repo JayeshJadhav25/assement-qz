@@ -24,7 +24,7 @@
       ```bash
       docker-compose up --build 
       ```
-    ### To run in detached mode 
+    ### Or to run in detached mode 
       ```bash
     docker-compose up --build -d
       ```
