@@ -12,8 +12,8 @@
 
 1. ## Clone the repository :
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/JayeshJadhav25/assement-qz.git
+   cd assement-qz
     ```
 
 2. ## Build and run with Docker :
@@ -43,8 +43,8 @@
 
 1. ## Clone the repository :
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/JayeshJadhav25/assement-qz.git
+   cd assement-qz
     ```
 
 
@@ -71,6 +71,21 @@
     Swagger documentation will be accessible at: http://localhost:3000/api-docs
 
 
+# Running Unit Tests
+The unit tests for the API and core logic are written using Jest. To run the tests, follow these steps:
+
+## Install Jest (if not already installed):
+
+  ```bash
+  npm install --save-dev jest
+  ```
+## Run Tests:
+
+To run all tests, execute the following command:
+
+  ```bash
+  npm test
+  ```
 
 # API Documentation
 
