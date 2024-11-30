@@ -99,8 +99,7 @@ We followed RESTful principles for designing the API. Each resource is mapped to
 
 ## Testing
 
-The backend API has been tested using Postman for manual testing of each endpoint
-
+The backend API has been tested using Postman for manual testing of each endpoint. Unit testing was implemented for core logic using Jest.
 
 
 
