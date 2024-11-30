@@ -12,7 +12,8 @@
 
 1. ## Clone the repository :
    ```bash
-   git clone https://github.com/JayeshJadhav25/assement-qz.git
+   git clone 
+https://github.com/JayeshJadhav25/assessment-qz.git
    cd assement-qz
     ```
 
@@ -43,7 +44,8 @@
 
 1. ## Clone the repository :
    ```bash
-   git clone https://github.com/JayeshJadhav25/assement-qz.git
+   git clone 
+https://github.com/JayeshJadhav25/assessment-qz.git
    cd assement-qz
     ```
 
