@@ -1,0 +1,377 @@
+openapi: 3.0.3
+info:
+  title: Quiz App API
+  description: API to create and manage quizzes
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: "Local server"
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Quiz:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'General Knowledge Quiz'
+        questions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 'q1'
+              text:
+                type: string
+                example: 'What is the capital of France?'
+              options:
+                type: array
+                items:
+                  type: string
+                  example: 'Paris'
+                description: 'The possible answer options for the question. Must contain exactly 4 options.'
+                minItems: 4
+                maxItems: 4
+                example: ['Paris', 'London', 'Berlin', 'Madrid']
+              correct_option:
+                type: integer
+                example: 1
+                description: 'The index of the correct option (1-based index).'
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Error Message"
+
+tags:
+  - name: Quiz
+    description: API for creating and managing quizzes.
+paths:
+  /quiz/create:
+    post:
+      summary: Create a new quiz
+      description: Creates a new quiz with a title and a list of questions.
+      tags:
+        - Quiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quiz'
+      responses:
+        '201':
+          description: Quiz created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Quiz created successfully'
+                  quiz_id:
+                    type: string
+                    example: '301df121-8fae-4612-89a2-b166d4b23c0d'
+        '422':
+          description: Validation error - invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: '"(variable name which is missing)" is required'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Internal server error'
+
+  /quiz/id/{id}:
+    get:
+      summary: Get a quiz by its ID
+      description: Fetches a quiz by its ID, with correct answers removed from the response.
+      tags:
+        - Quiz
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the quiz to fetch
+          schema:
+            type: string
+            example: "301df121-8fae-4612-89a2-b166d4b23c0d"
+      responses:
+        '200':
+          description: Quiz fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Quiz fetched successfully'
+                  quiz:
+                    $ref: '#/components/schemas/Quiz'
+        '404':
+          description: Quiz not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Quiz not found'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Internal server error'
+
+  /quiz/submit/answer:
+    post:
+      summary: Submit an answer for a quiz
+      description: Submits the user's answer for a specific question in the quiz and returns feedback on whether the answer was correct.
+      tags:
+        - Quiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: 'user123'
+                quiz_id:
+                  type: string
+                  example: '301df121-8fae-4612-89a2-b166d4b23c0d'
+                question_id:
+                  type: string
+                  example: 'q1'
+                selected_option:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: Answer submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Answer submitted successfully'
+                  result:
+                    type: object
+                    properties:
+                      question_id:
+                        type: string
+                        example: 'q1'
+                      is_correct:
+                        type: boolean
+                        example: true
+                      correct_option:
+                        type: integer
+                        example: 1
+        '422':
+          description: Validation error - invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: '"(variable name which is missing)" is required'
+        '400':
+          description: Bad Request - Invalid selection or already answered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid option selected or you have already answered this question.'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Quiz Not Found OR Question Not Found.'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Internal server error'
+
+  /quiz/result:
+    get:
+      summary: Get quiz result for a user
+      description: Fetches the result of a quiz for a specific user, including score and answer summary.
+      tags:
+        - Quiz
+      parameters:
+        - in: query
+          name: quiz_id
+          required: true
+          description: The ID of the quiz
+          schema:
+            type: string
+            example: '301df121-8fae-4612-89a2-b166d4b23c0d'
+        - in: query
+          name: user_id
+          required: true
+          description: The ID of the user
+          schema:
+            type: string
+            example: 'user123'
+      responses:
+        '200':
+          description: Result fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Result fetched successfully'
+                  result:
+                    type: object
+                    properties:
+                      user_id:
+                        type: string
+                        example: 'user123'
+                      quiz_id:
+                        type: string
+                        example: '301df121-8fae-4612-89a2-b166d4b23c0d'
+                      score:
+                        type: integer
+                        example: 3
+                      summary:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            question_id:
+                              type: string
+                              example: 'q1'
+                            is_correct:
+                              type: boolean
+                              example: true
+                            correct_option:
+                              type: integer
+                              example: 1
+        '422':
+          description: Validation error - missing parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Missing required query parameters: quiz_id, user_id.'
+        '404':
+          description: No answers found for this user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'No answers found for this user in this quiz.'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Internal server error'

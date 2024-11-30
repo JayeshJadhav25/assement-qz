@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "2febfbc0-6c8c-4a7c-a6fa-5861e7a4dd34",
+		"name": "QUIZ APP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17724395"
+	},
+	"item": [
+		{
+			"name": "create quiz",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Science and History Quiz\",\n  \"questions\": [\n    {\n      \"id\": \"q1\",\n      \"text\": \"What is the chemical symbol for water?\",\n      \"options\": [\"H2O\", \"O2\", \"CO2\", \"NaCl\"],\n      \"correct_option\": 1\n    },\n    {\n      \"id\": \"q2\",\n      \"text\": \"Who was the first president of the United States?\",\n      \"options\": [\"Thomas Jefferson\", \"George Washington\", \"Abraham Lincoln\", \"John Adams\"],\n      \"correct_option\": 2\n    },\n    {\n      \"id\": \"q3\",\n      \"text\": \"What is the largest planet in our solar system?\",\n      \"options\": [\"Earth\", \"Saturn\",\"Jupiter\", \"Mars\"],\n      \"correct_option\": 3\n    },\n    {\n      \"id\": \"q4\",\n      \"text\": \"What year did World War II end?\",\n      \"options\": [\"1939\", \"1941\", \"1950\", \"1945\"],\n      \"correct_option\": 4\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/quiz/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"quiz",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get quiz by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/quiz/id/2c3802b3-8553-4faf-ab58-495a347a9ef3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"quiz",
+						"id",
+						"2c3802b3-8553-4faf-ab58-495a347a9ef3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit answer API",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":\"1\",\n    \"question_id\": \"q4\",\n    \"selected_option\": 1,\n    \"quiz_id\": \"2c3802b3-8553-4faf-ab58-495a347a9ef3\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/quiz/submit/answer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"quiz",
+						"submit",
+						"answer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Result api",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/quiz/result?quiz_id=2c3802b3-8553-4faf-ab58-495a347a9ef3&user_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"quiz",
+						"result"
+					],
+					"query": [
+						{
+							"key": "quiz_id",
+							"value": "2c3802b3-8553-4faf-ab58-495a347a9ef3"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
